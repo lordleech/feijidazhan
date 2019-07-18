@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>飞机大战1.0</title>
+		<style>
+			#window{
+				width: 400px;
+				height: 600px;
+				background-color: black;
+				margin: 20px auto;
+				position: relative;
+				overflow: hidden;
+			}
+			#mine{
+				width: 30px;
+				height: 30px;
+				position: absolute;
+				left: 100px;
+				top: 200px;
+			}
+			zidan{
+				width: 6px;
+				height: 20px;
+				background-color: white;
+				position: absolute;
+			}
+			.diji{
+				width: 30px;
+				height: 30px;
+				position: absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="window">
+			<img id="mine" src="飞机.jpg">
+		</div>
+		
+		
+		<script>
+			var mine = document.getElementById("mine");
+			var rongqi = document.getElementById("window");
+			var H,V;//记录当前飞机应该在水平/垂直方向如何运动
+			var _left=185,_top=500;//记录飞机当前的坐标值
+			var zidans = [];
+			var dijis = [];
+			
+			
+			//程序每13毫秒都执行一次函数
+			setInterval(function(){
+				if(H=='←'){_left -= 1;}
+				if(H=='→'){_left += 1;}
+				if(V=='↑'){_top -= 1;}
+				if(V=='↓'){_top += 1;}
+				
+				if(_left<0){_left=0}
+				if(_left>370){_left=370}
+				if(_top<0){_top=0}
+				if(_top>570){_top=570}
+				
+				mine.style.left = _left + 'px';
+				mine.style.top = _top + 'px';
+				
+				//处理子弹
+				for(var i=0;i<zidans.length;){
+					//取得当前子弹的top值(数字值)
+					var $top = parseInt(zidans[i].style.top);
+					$top -= 2;
+					zidans[i].style.top = $top + 'px';
+					if($top<-20){
+						zidans[i].remove();
+						zidans.splice(i,1);
+					}else{
+						i++;
+					}
+				}
+				
+				//处理敌机
+				for(var i=0;i<dijis.length;){
+					var $top = parseInt(dijis[i].style.top);
+					$top += 1;
+					dijis[i].style.top = $top + 'px';
+					if($top>600){
+						dijis[i].remove();
+						dijis.splice(i,1);
+					}else{
+						i++;
+					}
+				}
+			},13);
+			
+			//用来定期产生敌机的
+			setInterval(function(){
+				var diji = document.createElement('img');
+				diji.src = '敌机.jpg';
+				rongqi.appendChild(diji);
+				diji.className = 'diji';
+				diji.style.top = '-30px';
+				diji.style.left = Math.floor(Math.random()*370) + 'px';
+				dijis.push(diji);
+			},1000);
+			
+			document.onkeydown = function(e){
+				// ↑87 →68 ↓83  ←65   32
+				var code = e.which;
+				switch(code){
+					case 87:
+						V = '↑';break;
+					case 83:
+						V = '↓';break;
+					case 68:
+						H = '→';break;
+					case 65:
+						H = '←';break;
+				}
+				if(code==32){
+					//生成一颗子弹,并且放在zidans里
+					var zidan = document.createElement('zidan');
+					rongqi.appendChild(zidan);
+					zidan.style.left = _left+12+'px';
+					zidan.style.top = _top + 'px';
+					
+					zidans.push(zidan);
+				}
+			}
+			
+			document.onkeyup = function(e){
+				var code = e.which;
+				if(H=='←' && code==65){H=''}
+				if(H=='→' && code==68){H=''}
+				if(V=='↑' && code==87){V=''}
+				if(V=='↓' && code==83){V=''}
+			}
+			
+			
+		</script>
+	</body>
+</html>
