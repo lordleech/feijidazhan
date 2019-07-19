@@ -78,14 +78,40 @@
 				
 				//处理敌机
 				for(var i=0;i<dijis.length;){
+					// 取得当前敌机的top
 					var $top = parseInt(dijis[i].style.top);
 					$top += 1;
+					// 移动了敌机的位置
 					dijis[i].style.top = $top + 'px';
 					if($top>600){
 						dijis[i].remove();
 						dijis.splice(i,1);
 					}else{
-						i++;
+						// 遍历所有的子弹
+						var flag = true;
+						for(var x=0;x<zidans.length;x++){
+							var zidanLeft = parseInt(zidans[x].style.left);
+							var zidanTop = parseInt(zidans[x].style.top);
+							var dijiLeft = parseInt(dijis[i].style.left);
+							var dijiTop = parseInt(dijis[i].style.top);
+							if(
+							zidanLeft > dijiLeft-6 
+							&& zidanLeft < dijiLeft+30
+							&& zidanTop < dijiTop+30
+							&& zidanTop > dijiTop-20
+							){
+								zidans[x].remove();
+								zidans.splice(x,1);
+								dijis[i].remove();
+								dijis.splice(i,1);
+								flag = false;
+								break;
+							}
+						}
+						
+						if(flag){
+							i++;
+						}
 					}
 				}
 			},13);
