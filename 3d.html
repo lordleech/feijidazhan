@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<style>
+			@keyframes aa{
+				from{transform: rotateX(0deg)rotateY(0deg);}
+				to{transform: rotateX(360deg)rotateY(720deg);}
+			}
+			
+			
+			#dizuo{
+				width: 400px;
+				height: 400px;
+				margin: 150px auto;
+				/* 视距:眼睛看的是整体的立体感 */
+				perspective: 800px;
+			}
+			#zhou{
+				width: 400px;
+				height: 400px;
+				position: relative;
+				/* 让轴做3d动画时,里面的图片也以3d的方式呈现 */
+				transform-style: preserve-3d; 
+				animation: aa 5s linear infinite;
+			}
+			img{
+				width: 400px;
+				height: 400px;
+				position: absolute;
+				left: 0;
+				top: 0;
+				opacity: .8;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="dizuo">
+			<div id="zhou">
+				<img style="transform: rotateY(90deg)translateZ(150px);" src="a1.jpg" />
+				<img style="transform: rotateY(180deg)translateZ(150px);" src="a2.jpg" />
+				<img style="transform: rotateY(270deg)translateZ(150px);" src="a3.jpg" />
+				<img style="transform: rotateY(360deg)translateZ(150px);" src="a4.jpg" />
+				<img style="transform: rotateX(90deg)translateZ(350px);" src="a5.jpg" />
+				<img style="transform: rotateX(-90deg)translateZ(150px);" src="a6.jpg" />
+			</div>
+		</div>
+	</body>
+</html>
